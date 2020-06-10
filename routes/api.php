@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resources([
+    'posts' => 'PostController',
     '/' => 'ShowAbout'
 ]);
 
