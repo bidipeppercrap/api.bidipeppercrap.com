@@ -34,7 +34,7 @@ class PostController extends Controller
     {
         $validated = $request->validated();
 
-        //Post::save($validated);
+        $validated->save();
 
         return $validated;
     }
