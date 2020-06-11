@@ -34,10 +34,11 @@ class PostController extends Controller
     {
         $validated = $request->validated();
         $post = new Post($validated);
+        $post->pinned ??= false;
 
         $post->save();
 
-        return $validated;
+        return $post;
     }
 
     /**

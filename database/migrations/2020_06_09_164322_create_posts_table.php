@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->string('display_title', 100)->nullable();
             $table->string('subtitle', 140)->nullable();
             $table->text('thumbnail')->nullable();
-            $table->boolean('pinned')->default(false);
+            $table->boolean('pinned');
             $table->timestamps();
         });
     }

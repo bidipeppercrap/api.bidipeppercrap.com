@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Post;
 
 class PostTest extends TestCase
 {
@@ -19,5 +20,10 @@ class PostTest extends TestCase
     {
         // $posts = factory(App\Post::class, 30)->make();
         return $this->assertTrue(true);
+    }
+
+    public function testStorePost()
+    {
+        return true;
     }
 }
