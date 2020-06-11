@@ -10,7 +10,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'content' => $faker->paragraphs,
         'display_title' => $faker->word,
-        'display_subtitle' => $faker->word,
+        'subtitle' => $faker->word,
         'thumbnail' => $faker->imageUrl,
         'pinned' => $faker->boolean(20)
     ];

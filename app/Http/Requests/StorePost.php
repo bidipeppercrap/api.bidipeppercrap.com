@@ -38,7 +38,7 @@ class StorePost extends FormRequest
             'title' => 'required_if:content,|max:16000',
             'content' => 'nullable|max:16000',
             'display_title' => 'nullable|max:100',
-            'display_subtitle' => 'nullable|max:140',
+            'subtitle' => 'nullable|max:140',
             'thumbnail' => 'nullable|max:16000',
             'pinned' => 'nullable|boolean'
         ];
@@ -51,7 +51,7 @@ class StorePost extends FormRequest
             'title.max' => 'Maximum characters length for Title is 16,000',
             'content.max' => 'Maximum characters length for Content is 16,000',
             'display_title.max' => 'Maximum characters length for Display Title is 100',
-            'display_subtitle.max' => 'Maximum characters length for Display Subtitle is 140',
+            'subtitle.max' => 'Maximum characters length for Subtitle is 140',
             'thumbnail.max' => 'Maximum characters length for Thumbnail URL is 16,000',
             'pinned.boolean' => 'Pinned value must be a boolean, otherwise just leave it blank to set it to False'
         ];

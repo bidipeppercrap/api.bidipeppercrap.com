@@ -33,8 +33,9 @@ class PostController extends Controller
     public function store(StorePost $request)
     {
         $validated = $request->validated();
+        $post = new Post($validated);
 
-        $validated->save();
+        $post->save();
 
         return $validated;
     }
