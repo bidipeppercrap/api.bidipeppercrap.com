@@ -9,6 +9,15 @@ use Illuminate\Contracts\Validation\Validator;
 class StorePost extends FormRequest
 {
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -26,7 +35,7 @@ class StorePost extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'nullable|max:16000',
+            'title' => 'required_if:content,|max:16000',
             'content' => 'nullable|max:16000',
             'display_title' => 'nullable|max:100',
             'display_subtitle' => 'nullable|max:140',
@@ -38,6 +47,7 @@ class StorePost extends FormRequest
     public function messages()
     {
         return [
+            'title.required_if' => 'Either title or content is required, both can\'t be blank',
             'title.max' => 'Maximum characters length for Title is 16,000',
             'content.max' => 'Maximum characters length for Content is 16,000',
             'display_title.max' => 'Maximum characters length for Display Title is 100',

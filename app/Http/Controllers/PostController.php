@@ -13,9 +13,15 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $posts = Post::where('title', 'LIKE', "%{$request->query('title')}%")
+            ->orWhere('content', 'LIKE', "%{$request->query('content')}%")
+            ->orderBy('pinned', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(24);
+
+        return $posts;
     }
 
     /**
@@ -27,6 +33,8 @@ class PostController extends Controller
     public function store(StorePost $request)
     {
         $validated = $request->validated();
+
+        //Post::save($validated);
 
         return $validated;
     }
