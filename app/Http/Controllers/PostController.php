@@ -42,7 +42,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePost  $request
+     * @param  StorePost  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StorePost $request)
@@ -69,22 +69,14 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePost  $request
+     * @param  UpdatePost  $request
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePost $request, Post $post)
     {
-        error_log("WEre");
-        // $validated = $request->validated();
-        // $validated->pinned ??= false;
-        // $post->title = $validated->title;
-        // $post->content = $validated->content;
-        // $post->display_title = $validated->display_title;
-        // $post->subtitle = $validated->subtitle;
-        // $post->thumbnail = $validated->thumbnial;
-        // $post->pinned = $validated->pinned;
-        //$post->save();
+        $validated = $request->validated();
+        $post->update($validated);
 
         return $post;
     }

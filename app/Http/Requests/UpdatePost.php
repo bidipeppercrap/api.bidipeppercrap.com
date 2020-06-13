@@ -7,6 +7,18 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdatePost extends FormRequest
 {
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'pinned' => $this->pinned ?? false
+        ]);
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
