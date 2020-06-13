@@ -20,7 +20,11 @@ class PostController extends Controller
             'skip' => $request->query('skip') ?? 0,
             'take' => $request->query('take') ?? 24
         ];
-        $posts = Post::selectRaw('id, LEFT(title, 100), LEFT(content, 140), display_title, subtitle, thumbnail, pinned, created_at, updated_at')
+        $sql = [
+            'title' => "IF(LENGTH(title) > 100, CONCAT(LEFT(title, 97), '...'), title) as title",
+            'content' => "IF(LENGTH(content) > 140, CONCAT(LEFT(content, 137), '...'), content) as content"
+        ];
+        $posts = Post::selectRaw("id, {$sql['title']}, {$sql['content']}, display_title, subtitle, thumbnail, pinned, created_at, updated_at")
             ->where('title', 'LIKE', "%{$query['keyword']}%")
             ->orWhere('content', 'LIKE', "%{$query['keyword']}%")
             ->orWhere('display_title', 'LIKE', "%{$query['keyword']}%")
