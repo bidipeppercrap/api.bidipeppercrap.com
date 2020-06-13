@@ -3,23 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
 
-class StorePost extends FormRequest
+class UpdatePost extends FormRequest
 {
-    /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'pinned' => $this->pinned ?? false
-        ]);
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *

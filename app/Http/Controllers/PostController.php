@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
+use App\Http\Requests\UpdatePost;
 
 class PostController extends Controller
 {
@@ -48,7 +49,6 @@ class PostController extends Controller
     {
         $validated = $request->validated();
         $post = new Post($validated);
-        $post->pinned ??= false;
 
         $post->save();
 
@@ -63,19 +63,30 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return $post;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpdatePost  $request
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePost $request, Post $post)
     {
-        //
+        error_log("WEre");
+        // $validated = $request->validated();
+        // $validated->pinned ??= false;
+        // $post->title = $validated->title;
+        // $post->content = $validated->content;
+        // $post->display_title = $validated->display_title;
+        // $post->subtitle = $validated->subtitle;
+        // $post->thumbnail = $validated->thumbnial;
+        // $post->pinned = $validated->pinned;
+        //$post->save();
+
+        return $post;
     }
 
     /**
@@ -86,6 +97,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return $post;
     }
 }
