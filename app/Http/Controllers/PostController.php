@@ -15,11 +15,19 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::where('title', 'LIKE', "%{$request->query('title')}%")
-            ->orWhere('content', 'LIKE', "%{$request->query('content')}%")
+        $query = [
+            'title' => $request->query('title'),
+            'content' => $request->query('content'),
+            'skip' => $request->query('skip') ?? 0,
+            'take' => $request->query('take') ?? 24
+        ];
+        $posts = Post::where('title', 'LIKE', "%{$query['title']}%")
+            ->orWhere('content', 'LIKE', "%{$query['content']}%")
             ->orderBy('pinned', 'DESC')
             ->orderBy('created_at', 'DESC')
-            ->paginate(24);
+            ->skip($query['skip'])
+            ->take($query['take'])
+            ->get();
 
         return $posts;
     }
