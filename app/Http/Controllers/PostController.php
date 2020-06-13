@@ -16,13 +16,15 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $query = [
-            'title' => $request->query('title'),
-            'content' => $request->query('content'),
+            'keyword' => $request->query('keyword'),
             'skip' => $request->query('skip') ?? 0,
             'take' => $request->query('take') ?? 24
         ];
-        $posts = Post::where('title', 'LIKE', "%{$query['title']}%")
-            ->orWhere('content', 'LIKE', "%{$query['content']}%")
+        $posts = Post::selectRaw('id, LEFT(title, 100), LEFT(content, 140), display_title, subtitle, thumbnail, pinned, created_at, updated_at')
+            ->where('title', 'LIKE', "%{$query['keyword']}%")
+            ->orWhere('content', 'LIKE', "%{$query['keyword']}%")
+            ->orWhere('display_title', 'LIKE', "%{$query['keyword']}%")
+            ->orWhere('subtitle', 'LIKE', "%{$query['keyword']}%")
             ->orderBy('pinned', 'DESC')
             ->orderBy('created_at', 'DESC')
             ->skip($query['skip'])
