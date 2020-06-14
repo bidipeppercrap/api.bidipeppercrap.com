@@ -12,6 +12,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -26,15 +27,15 @@ class PostController extends Controller
             'content' => "IF(LENGTH(content) > 140, CONCAT(LEFT(content, 137), '...'), content) as content"
         ];
         $posts = Post::selectRaw("id, {$sql['title']}, {$sql['content']}, display_title, subtitle, thumbnail, pinned, created_at, updated_at")
-            ->where('title', 'LIKE', "%{$query['keyword']}%")
-            ->orWhere('content', 'LIKE', "%{$query['keyword']}%")
-            ->orWhere('display_title', 'LIKE', "%{$query['keyword']}%")
-            ->orWhere('subtitle', 'LIKE', "%{$query['keyword']}%")
-            ->orderBy('pinned', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->skip($query['skip'])
-            ->take($query['take'])
-            ->get();
+        ->where('title', 'LIKE', "%{$query['keyword']}%")
+        ->orWhere('content', 'LIKE', "%{$query['keyword']}%")
+        ->orWhere('display_title', 'LIKE', "%{$query['keyword']}%")
+        ->orWhere('subtitle', 'LIKE', "%{$query['keyword']}%")
+        ->orderBy('pinned', 'DESC')
+        ->orderBy('created_at', 'DESC')
+        ->skip($query['skip'])
+        ->take($query['take'])
+        ->get();
 
         return $posts;
     }
