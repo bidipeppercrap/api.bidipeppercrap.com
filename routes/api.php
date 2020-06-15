@@ -18,6 +18,7 @@ Route::resources([
     'posts' => 'PostController',
     'contacts' => 'ContactController',
     'favorites' => 'FavoriteController',
+    'wishes' => 'WishController',
     '/' => 'ShowAbout'
 ]);
 

@@ -4,28 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Wish;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreWish;
+use App\Http\Responses\Index;
 
 class WishController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Index
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = [
+            'keyword' => $request->query('keyword'),
+            'skip' => $request->query('skip') ?? 0,
+            'take' => $request->query('take') ?? 24
+        ];
+
+        $whereQuery = Wish::where('title', 'LIKE', "%{$query['keyword']}%")
+        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%")
+        ->orderBy('order', 'DESC');
+        
+        $count = $whereQuery->count();
+
+        $data = $whereQuery
+        ->skip($query['skip'])
+        ->take($query['take'])
+        ->get();
+
+        $response = Index::response($count, $query['skip'], $query['take'], $data);
+
+        return $response;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreWish  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreWish $request)
     {
-        //
+        $validated = $request->validated();
+        $wish = new Wish($validated);
+
+        $wish->save();
+
+        return $wish;
     }
 
     /**
@@ -36,19 +62,22 @@ class WishController extends Controller
      */
     public function show(Wish $wish)
     {
-        //
+        return $wish;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreWish  $request
      * @param  \App\Wish  $wish
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Wish $wish)
+    public function update(StoreWish $request, Wish $wish)
     {
-        //
+        $validated = $request->validated();
+        $wish->update($validated);
+
+        return $wish;
     }
 
     /**
@@ -59,6 +88,8 @@ class WishController extends Controller
      */
     public function destroy(Wish $wish)
     {
-        //
+        $wish->delete();
+
+        return $wish;
     }
 }
