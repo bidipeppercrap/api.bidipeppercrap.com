@@ -12,7 +12,7 @@ class WishController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return \Illuminate\Http\Index
+     * @return Index
      */
     public function index(Request $request)
     {
@@ -23,12 +23,12 @@ class WishController extends Controller
         ];
 
         $whereQuery = Wish::where('title', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%")
-        ->orderBy('order', 'DESC');
+        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%");
         
         $count = $whereQuery->count();
 
         $data = $whereQuery
+        ->orderBy('order', 'DESC')
         ->skip($query['skip'])
         ->take($query['take'])
         ->get();

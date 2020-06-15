@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreContact;
+use App\Http\Response\Index;
 
 class ContactController extends Controller
 {
@@ -12,7 +13,7 @@ class ContactController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return Index
      */
     public function index(Request $request)
     {
@@ -21,13 +22,20 @@ class ContactController extends Controller
             'skip' => $request->query('skip') ?? 0,
             'take' => $request->query('take') ?? 100
         ];
-        $contacts = Contact::where('title', 'LIKE', "%{$query['keyword']}%")
+
+        $whereQuery = Contact::where('title', 'LIKE', "%{$query['keyword']}%");
+
+        $count = $whereQuery->count();
+
+        $data = $whereQuery
         ->orderBy('order', 'DESC')
         ->skip($query['skip'])
         ->take($query['take'])
         ->get();
 
-        return $contacts;
+        $response = Index::response($count, $query['skip'], $query['take'], $data);
+
+        return $response;
     }
 
     /**

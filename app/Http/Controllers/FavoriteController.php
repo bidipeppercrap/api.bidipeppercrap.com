@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Favorite;
 use Illuminate\Http\Request;
-use App\Http\Responses\Index;
 use App\Http\Requests\StoreFavorite;
+use App\Http\Responses\Index;
 
 class FavoriteController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Index
      */
     public function index(Request $request)
     {
@@ -21,16 +21,21 @@ class FavoriteController extends Controller
             'skip' => $request->query('skip') ?? 0,
             'take' => $request->query('take') ?? 24
         ];
+
         $whereQuery = Favorite::where('title', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%")
-        ->orderBy('order', 'DESC');
+        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%");
+
         $count = $whereQuery->count();
-        $favorites = $whereQuery
+
+        $data = $whereQuery
+        ->orderBy('order', 'DESC')
         ->skip($query['skip'])
         ->take($query['take'])
         ->get();
 
-        return Index::response($count, $query['skip'], $query['take'], $favorites);
+        $response = Index::response($count, $query['skip'], $query['take'], $data);
+
+        return $response;
     }
 
     /**
