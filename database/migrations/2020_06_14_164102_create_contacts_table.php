@@ -18,7 +18,7 @@ class CreateContactsTable extends Migration
             $table->string('title', 100);
             $table->text('icon');
             $table->text('link');
-            $table->date('order')->default(date('Y/m/d'));
+            $table->date('order')->default(date('Y-m-d'));
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class CreateFavoritesTable extends Migration
             $table->text('thumbnail')->nullable();
             $table->text('link')->nullable();
             $table->boolean('show_title')->default(true);
-            $table->date('order')->default(date('Y/m/d'));
+            $table->date('order')->default(date('Y-m-d'));
             $table->timestamps();
         });
     }

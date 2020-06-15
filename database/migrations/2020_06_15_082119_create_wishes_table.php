@@ -15,6 +15,12 @@ class CreateWishesTable extends Migration
     {
         Schema::create('wishes', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 100)->unique();
+            $table->string('comment', 280)->nullable();
+            $table->text('thumbnail')->nullable();
+            $table->text('link')->nullable();
+            $table->boolean('show_title')->default(true);
+            $table->date('order')->default(date('Y-m-d'));
             $table->timestamps();
         });
     }
