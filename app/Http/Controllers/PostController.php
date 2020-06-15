@@ -6,7 +6,7 @@ use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
-use App\Http\Response\Index;
+use App\Http\Responses\Index;
 
 class PostController extends Controller
 {

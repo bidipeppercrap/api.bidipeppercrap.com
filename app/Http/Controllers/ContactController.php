@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreContact;
-use App\Http\Response\Index;
+use App\Http\Responses\Index;
 
 class ContactController extends Controller
 {
