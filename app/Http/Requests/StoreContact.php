@@ -13,9 +13,7 @@ class StoreContact extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge([
-            'order' => $this->order ?? date("Y/m/d")
-        ]);
+        //
     }
 
     /**

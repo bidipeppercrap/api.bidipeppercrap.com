@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::resources([
     'posts' => 'PostController',
     'contacts' => 'ContactController',
+    'favorites' => 'FavoriteController',
     '/' => 'ShowAbout'
 ]);
 
