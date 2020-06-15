@@ -20,19 +20,21 @@ class PostController extends Controller
         $query = [
             'keyword' => $request->query('keyword'),
             'skip' => $request->query('skip') ?? 0,
-            'take' => $request->query('take') ?? 24
+            'take' => $request->query('take') ?? 24,
+            'pinned' => $request->query('pinned') ? true : false
         ];
         $sql = [
             'title' => "IF(LENGTH(title) > 100, CONCAT(LEFT(title, 97), '...'), title) as title",
             'content' => "IF(LENGTH(content) > 140, CONCAT(LEFT(content, 137), '...'), content) as content"
         ];
         $posts = Post::selectRaw("id, {$sql['title']}, {$sql['content']}, display_title, subtitle, thumbnail, pinned, created_at, updated_at")
-        ->where('title', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('content', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('display_title', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('subtitle', 'LIKE', "%{$query['keyword']}%")
-        ->orderBy('pinned', 'DESC')
-        ->orderBy('created_at', 'DESC')
+        ->where('pinned', $query['pinned'])
+        ->where(fn($q) => $q->where('title', 'LIKE', "%{$query['keyword']}%")
+            ->orWhere('content', 'LIKE', "%{$query['keyword']}%")
+            ->orWhere('display_title', 'LIKE', "%{$query['keyword']}%")
+            ->orWhere('subtitle', 'LIKE', "%{$query['keyword']}%")
+            ->orderBy('created_at', 'DESC')
+        )
         ->skip($query['skip'])
         ->take($query['take'])
         ->get();
