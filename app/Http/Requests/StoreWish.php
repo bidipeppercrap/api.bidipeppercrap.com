@@ -24,7 +24,7 @@ class StoreWish extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:100|unique:wishes',
+            'title' => ['required', 'max:100', \Illuminate\Validation\Rule::unique('wishes')->ignore($this->wish->id)],
             'comment' => 'nullable|max:280',
             'thumbnail' => 'nullable|max:16000',
             'link' => 'nullable|max:16000',

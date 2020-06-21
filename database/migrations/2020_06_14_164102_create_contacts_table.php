@@ -15,7 +15,7 @@ class CreateContactsTable extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 100);
+            $table->string('title', 100)->unique();
             $table->text('icon');
             $table->text('link');
             $table->date('order')->default(date('Y-m-d'));

@@ -24,7 +24,7 @@ class StoreProject extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:100|unique:projects',
+            'title' => ['required', 'max:100', \Illuminate\Validation\Rule::unique('projects')->ignore($this->project->id)],
             'description' => 'nullable|max:280',
             'thumbnail' => 'nullable|max:16000',
             'link' => 'nullable|max:16000',

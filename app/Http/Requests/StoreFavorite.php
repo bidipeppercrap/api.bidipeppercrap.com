@@ -34,7 +34,7 @@ class StoreFavorite extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:100|unique:favorites',
+            'title' => ['required', 'max:100', \Illuminate\Validation\Rule::unique('favorites')->ignore($this->favorite->id)],
             'comment' => 'nullable|max:280',
             'thumbnail' => 'nullable|max:16000',
             'link' => 'nullable|max:16000',

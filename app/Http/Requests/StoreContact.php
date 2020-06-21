@@ -34,7 +34,7 @@ class StoreContact extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:100',
+            'title' => ['required', 'max:100', \Illuminate\Validation\Rule::unique('contacts')->ignore($this->contact->id)],
             'icon' => 'required|max:16000',
             'link' => 'required|max:16000',
             'order' => 'nullable|date'
@@ -46,6 +46,7 @@ class StoreContact extends FormRequest
         return [
             'title.required' => 'Please specify a title for this contact',
             'title.max' => 'Maximum characters for title is 16,000',
+            'title.unique' => 'Title must be unique',
             'icon.required' => 'Please specify an icon url',
             'icon.max' => 'Icon url is too long',
             'link.required' => 'Please specify an link url',
