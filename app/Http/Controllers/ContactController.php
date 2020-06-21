@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreContact;
+use App\Http\Requests\UpdateContact;
 use App\Http\Responses\Index;
 
 class ContactController extends Controller
@@ -68,11 +69,11 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreContact  $request
+     * @param  UpdateContact  $request
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreContact $request, Contact $contact)
+    public function update(UpdateContact $request, Contact $contact)
     {
         $validated = $request->validated();
         $contact->update($validated);

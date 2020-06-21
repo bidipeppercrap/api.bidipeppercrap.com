@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreContact extends FormRequest
+class UpdateContact extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreContact extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:100|unique:contacts',
+            'title' => ['required', 'max:100', \Illuminate\Validation\Rule::unique('contacts')->ignore($this->contact->id)],
             'icon' => 'required|max:16000',
             'link' => 'required|max:16000',
             'order' => 'nullable|date'

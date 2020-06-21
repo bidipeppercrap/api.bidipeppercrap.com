@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFavorite extends FormRequest
+class UpdateFavorite extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreFavorite extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:100|unique:favorites',
+            'title' => ['required', 'max:100', \Illuminate\Validation\Rule::unique('favorites')->ignore($this->favorite->id)],
             'comment' => 'nullable|max:280',
             'thumbnail' => 'nullable|max:16000',
             'link' => 'nullable|max:16000',

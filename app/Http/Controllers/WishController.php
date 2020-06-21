@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Wish;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreWish;
+use App\Http\Requests\UpdateWish;
 use App\Http\Responses\Index;
 
 class WishController extends Controller
@@ -68,11 +69,11 @@ class WishController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreWish  $request
+     * @param  UpdateWish  $request
      * @param  \App\Wish  $wish
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreWish $request, Wish $wish)
+    public function update(UpdateWish $request, Wish $wish)
     {
         $validated = $request->validated();
         $wish->update($validated);

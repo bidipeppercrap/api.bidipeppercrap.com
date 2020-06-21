@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Favorite;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreFavorite;
+use App\Http\Requests\UpdateFavorite;
 use App\Http\Responses\Index;
 
 class FavoriteController extends Controller
@@ -68,11 +69,11 @@ class FavoriteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreFavorite  $request
+     * @param  UpdateFavorite  $request
      * @param  \App\Favorite  $favorite
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreFavorite $request, Favorite $favorite)
+    public function update(UpdateFavorite $request, Favorite $favorite)
     {
         $validated = $request->validated();
         $favorite->update($validated);

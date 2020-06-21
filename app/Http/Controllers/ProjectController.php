@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProject;
+use App\Http\Requests\UpdateProject;
 use App\Http\Responses\Index;
 
 class ProjectController extends Controller
@@ -69,11 +70,11 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreProject  $request
+     * @param  UpdateProject  $request
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreProject $request, Project $project)
+    public function update(UpdateProject $request, Project $project)
     {
         $validated = $request->validated();
 
