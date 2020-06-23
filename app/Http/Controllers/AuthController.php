@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use App\User;
 use App\Http\Requests\RegisterUser;
 use App\Http\Requests\RegisterRoot;
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
         $user->save();
 
-        $token = $user->createToken(env('APP_NAME'))->accessToken;
+        $token = $user->createToken(config('app.name'))->accessToken;
 
         return $token;
     }
@@ -33,7 +34,20 @@ class AuthController extends Controller
 
         $root->save();
 
-        $token = $root->createToken(env('APP_NAME'))->accessToken;
+        $token = $root->createToken(config('app.name'))->accessToken;
+
+        return $token;
+    }
+
+    public function login(Request $request)
+    {
+        $user = User::where('identity', $request->identity)->firstOrFail();
+
+        if (!Hash::check($request->key, $user->key, [])) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        $token = $user->createToken(config('app.name'))->accessToken;
 
         return $token;
     }
