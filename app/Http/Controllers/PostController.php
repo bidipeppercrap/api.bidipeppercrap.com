@@ -10,6 +10,11 @@ use App\Http\Responses\Index;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:root,admin'])->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      *
