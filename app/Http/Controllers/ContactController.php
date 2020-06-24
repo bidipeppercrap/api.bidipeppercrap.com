@@ -10,6 +10,11 @@ use App\Http\Responses\Index;
 
 class ContactController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:root'])->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      *
