@@ -25,8 +25,8 @@ class WishController extends Controller
         $keyword = $request->query('keyword', '');
         $limit = $request->query('limit', 24);
 
-        $data = Wish::where('title', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%")
+        $data = Wish::where('title', 'LIKE', "%{$keyword}%")
+        ->orWhere('comment', 'LIKE', "%{$keyword}%")
         ->orderBy('order', 'DESC')
         ->paginate($limit);
 

@@ -25,7 +25,7 @@ class ContactController extends Controller
         $keyword = $request->query('keyword', '');
         $limit = $request->query('limit', 100);
 
-        $data = Contact::where('title', 'LIKE', "%{$query['keyword']}%")
+        $data = Contact::where('title', 'LIKE', "%{$keyword}%")
         ->orderBy('order', 'DESC')
         ->paginate($limit);
 
