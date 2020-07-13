@@ -6,7 +6,6 @@ use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
-use App\Http\Responses\Index;
 
 class PostController extends Controller
 {
@@ -19,41 +18,30 @@ class PostController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return Index
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $query = [
-            'keyword' => $request->query('keyword'),
-            'skip' => $request->query('skip') ?? 0,
-            'take' => $request->query('take') ?? 24,
-            'pinned' => $request->query('pinned') ? true : false
-        ];
+        $keyword = $request->query('keyword', '');
+        $limit = $request->query('limit', 24);
+        $pinned = $request->query('pinned', false);
 
         $sql = [
             'title' => "IF(LENGTH(title) > 100, CONCAT(LEFT(title, 97), '...'), title) as title",
             'content' => "IF(LENGTH(content) > 140, CONCAT(LEFT(content, 137), '...'), content) as content"
         ];
 
-        $whereQuery = Post::selectRaw("id, {$sql['title']}, {$sql['content']}, display_title, subtitle, thumbnail, pinned, created_at, updated_at")
-        ->where('pinned', $query['pinned'])
-        ->where(fn($q) => $q->where('title', 'LIKE', "%{$query['keyword']}%")
-            ->orWhere('content', 'LIKE', "%{$query['keyword']}%")
-            ->orWhere('display_title', 'LIKE', "%{$query['keyword']}%")
-            ->orWhere('subtitle', 'LIKE', "%{$query['keyword']}%")
-        );
-
-        $count = $whereQuery->count();
-
-        $data = $whereQuery
+        $data = Post::selectRaw("id, {$sql['title']}, {$sql['content']}, display_title, subtitle, thumbnail, pinned, created_at, updated_at")
+        ->where('pinned', $pinned)
+        ->where(fn($q) => $q->where('title', 'LIKE', "%{$keyword}%")
+            ->orWhere('content', 'LIKE', "%{$keyword}%")
+            ->orWhere('display_title', 'LIKE', "%{$keyword}%")
+            ->orWhere('subtitle', 'LIKE', "%{$keyword}%")
+        )
         ->orderBy('created_at', 'DESC')
-        ->skip($query['skip'])
-        ->take($query['take'])
-        ->get();
+        ->paginate($limit);
 
-        $response = Index::response($count, $query['skip'], $query['take'], $data);
-
-        return $response;
+        return $data;
     }
 
     /**

@@ -6,7 +6,6 @@ use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreContact;
 use App\Http\Requests\UpdateContact;
-use App\Http\Responses\Index;
 
 class ContactController extends Controller
 {
@@ -19,29 +18,18 @@ class ContactController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return Index
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $query = [
-            'keyword' => $request->query('keyword'),
-            'skip' => $request->query('skip') ?? 0,
-            'take' => $request->query('take') ?? 100
-        ];
+        $keyword = $request->query('keyword', '');
+        $limit = $request->query('limit', 100);
 
-        $whereQuery = Contact::where('title', 'LIKE', "%{$query['keyword']}%");
-
-        $count = $whereQuery->count();
-
-        $data = $whereQuery
+        $data = Contact::where('title', 'LIKE', "%{$query['keyword']}%")
         ->orderBy('order', 'DESC')
-        ->skip($query['skip'])
-        ->take($query['take'])
-        ->get();
+        ->paginate($limit);
 
-        $response = Index::response($count, $query['skip'], $query['take'], $data);
-
-        return $response;
+        return $data;
     }
 
     /**

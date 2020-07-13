@@ -6,7 +6,6 @@ use App\Favorite;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreFavorite;
 use App\Http\Requests\UpdateFavorite;
-use App\Http\Responses\Index;
 
 class FavoriteController extends Controller
 {
@@ -18,30 +17,19 @@ class FavoriteController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return Index
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $query = [
-            'keyword' => $request->query('keyword'),
-            'skip' => $request->query('skip') ?? 0,
-            'take' => $request->query('take') ?? 24
-        ];
+        $keyword = $request->query('keyword', '');
+        $limit = $request->query('limit', 24);
 
-        $whereQuery = Favorite::where('title', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%");
-
-        $count = $whereQuery->count();
-
-        $data = $whereQuery
+        $data = Favorite::where('title', 'LIKE', "%{$keyword}%")
+        ->orWhere('comment', 'LIKE', "%{$keyword}%")
         ->orderBy('order', 'DESC')
-        ->skip($query['skip'])
-        ->take($query['take'])
-        ->get();
+        ->paginate($limit);
 
-        $response = Index::response($count, $query['skip'], $query['take'], $data);
-
-        return $response;
+        return $data;
     }
 
     /**

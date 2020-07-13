@@ -6,7 +6,6 @@ use App\Wish;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreWish;
 use App\Http\Requests\UpdateWish;
-use App\Http\Responses\Index;
 
 class WishController extends Controller
 {
@@ -18,30 +17,20 @@ class WishController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
-     * @return Index
+     * @return \Illuminate\Http\Response
+     * 
      */
     public function index(Request $request)
     {
-        $query = [
-            'keyword' => $request->query('keyword'),
-            'skip' => $request->query('skip') ?? 0,
-            'take' => $request->query('take') ?? 24
-        ];
+        $keyword = $request->query('keyword', '');
+        $limit = $request->query('limit', 24);
 
-        $whereQuery = Wish::where('title', 'LIKE', "%{$query['keyword']}%")
-        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%");
-        
-        $count = $whereQuery->count();
-
-        $data = $whereQuery
+        $data = Wish::where('title', 'LIKE', "%{$query['keyword']}%")
+        ->orWhere('comment', 'LIKE', "%{$query['keyword']}%")
         ->orderBy('order', 'DESC')
-        ->skip($query['skip'])
-        ->take($query['take'])
-        ->get();
+        ->paginate($limit);
 
-        $response = Index::response($count, $query['skip'], $query['take'], $data);
-
-        return $response;
+        return $data;
     }
 
     /**

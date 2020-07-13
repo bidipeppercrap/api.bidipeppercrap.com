@@ -15,10 +15,9 @@ class ShowAbout extends Controller
     public function index(Request $request)
     {
         return [
-            'message' => 'Welcome to bidipeppercrap.com!',
-            'author_name' => 'bidipeppercrap',
-            'author_email' => 'bidipeppercrap@outlook.com',
-            'author_phone' => '+62 852 5058 5135'
+            'author_name' => env('AUTHOR_NAME'),
+            'author_email' => env('AUTHOR_EMAIL'),
+            'author_phone' => env('AUTHOR_PHONE')
         ];
     }
 }
