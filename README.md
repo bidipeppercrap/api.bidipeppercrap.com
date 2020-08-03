@@ -5,6 +5,8 @@ The server side of bidipeppercrap.com
 [<img align="left" width="26px" src="https://laravel.com/img/logomark.min.svg">][laravel]
 [<img align="left" width="26px" src="https://mariadb.org/wp-content/uploads/2019/02/cropped-mariadb_org_rgb_r_512-1-270x270.png">][mariadb]
 
+<br>
+
 ## Setup
 #### Database
 - Login to `mariadb`
