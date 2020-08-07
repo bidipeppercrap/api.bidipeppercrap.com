@@ -8,12 +8,12 @@ use Auth0\SDK\Exception\InvalidTokenException;
 
 use Closure;
 
-class CheckRole
+class CheckJWT
 {
     protected $userRepository;
 
     /**
-     * CheckScope constructor.
+     * CheckJWT constructor.
      *
      * @param Auth0UserRepository $userRepository
      */
@@ -27,35 +27,24 @@ class CheckRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  \string  $scope
      * @return mixed
      */
-    public function handle($request, Closure $next, $scope)
+    public function handle($request, Closure $next)
     {
         $auth0 = \App::make('auth0');
         $accessToken = $request->bearerToken();
 
+        if (!$accessToken) {
+            return response()->json(["message" => "Missing token!"], 401);
+        }
+
         try {
             $tokenInfo = $auth0->decodeJWT($accessToken);
             $user = $this->userRepository->getUserByDecodedJWT($tokenInfo);
-
             if (!$user) {
-                return response()->json(["message" => "Unauthenticated"], 401);
+                return response()->json(["message" => "Unauthorized"], 401);
             }
 
-            if($scope) {
-                $hasScope = false;
-                if(isset($tokenInfo['scope'])) {
-                    $scopes = explode(" ", $tokenInfo['scope']);
-                    foreach ($scopes as $s) {
-                        if ($s === $scope)
-                            $hasScope = true;
-                    }
-                } 
-                if(!$hasScope) {
-                    return response()->json(["message" => "Unauthorized"], 403);
-                }
-            }
         } catch (InvalidTokenException $e) {
             return response()->json(["message" => $e->getMessage()], 401);
         } catch (CoreException $e) {

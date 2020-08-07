@@ -9,7 +9,7 @@ class UploadController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:root,admin']);
+        $this->middleware(['jwt', 'role:root,admin']);
     }
 
     public function store(Request $request)

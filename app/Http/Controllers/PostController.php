@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:root,admin'])->except(['index', 'show']);
+        $this->middleware(['jwt', 'role:root'])->except(['index', 'show']);
     }
 
     /**
