@@ -23,8 +23,6 @@ Route::apiResources([
     '/' => 'ShowAbout'
 ]);
 
-Route::post('register', 'AuthController@register')->middleware('auth:api');
-Route::post('rootregister', 'AuthController@registerRoot');
 Route::post('login', 'AuthController@login');
 
 Route::post('uploads', 'UploadController@store');
